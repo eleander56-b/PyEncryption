@@ -171,56 +171,28 @@ def dec_folder():
 
 
 
-def equalize(path_1, path_2):
-    dat1 = open(path_1, "rb").read()
-    dat2 = open(path_2, "rb").read()
-    l_dat1 = len(dat1)
-    l_dat2 = len(dat2)
-    if l_dat1 > l_dat2:
-        dat2 += os.urandom(l_dat1 - l_dat2)
-    else:
-        dat1 += os.urandom(l_dat2 - l_dat2)
-    with open(path_1, "wb") as out:
-        out.write(dat1)
-    with open(path_2, "wb") as out:
-        out.write(dat2)
-
-def keygen(orig_path, enc_path, key_path):
-    print("In Prozess...")
-    equalize(orig_path, enc_path)
-    original = open(orig_path, "rb"). read()
-    encrypted = open(enc_path, "rb"). read()
-    key = bytes(a ^ b for (a, b) in zip(original, encrypted))
-    with open(key_path + enc_path + ".key", "wb") as key_out:
-        key_out.write(key)
-    print("encrypted")
-    if wilkommen == "2":
-        commandline()
-
-def decryptttt(enc_path, key_path, dec_path):
-    print("In Prozess...")
-    encrypted = open(enc_path, "rb").read()
-    key = open(key_path, "rb").read()
-    decrypted = bytes(a ^ b for (a, b) in zip(encrypted, key))
-    with open(dec_path, "wb") as decrypted_out:
-        decrypted_out.write(decrypted)
-    os.remove(key_path)
-    print("decrypted")
-    if wilkommen == "2":
-        commandline()
+from encryption_logic import keygen, decryptttt
 
 def encccc():
     orig_path = filedialog.askopenfilename(title='Select File to hide (Wird Versteckt)')
     enc_path = filedialog.askopenfilename(title='Select Original file (Bleibt erhalten)')
     print("\n\n" + orig_path + " will be hidden in " + enc_path)
+    print("In Prozess...")
     keygen(orig_path, enc_path, "")
+    print("encrypted")
+    if wilkommen == "2":
+        commandline()
 
 def decccc():
     orig_path = filedialog.askopenfilename(title='Select Original file')
     enc_path = orig_path + ".key"
     wo_enddat = filedialog.askdirectory(title='Select the folder where outcoming file will be stored')
     key_path = input("\n\nEnter the name of the Original file:")
+    print("In Prozess...")
     decryptttt(orig_path, enc_path,wo_enddat + "/" + key_path)
+    print("decrypted")
+    if wilkommen == "2":
+        commandline()
 
 ###------------------------------------------------------------------
 def window():
